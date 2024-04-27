@@ -1,0 +1,21 @@
+image: gitpod/workspace-full:latest
+
+tasks:
+  - name: Install dependencies and Start a function
+    command: |
+      pip install -r requirements.txt
+      functions-framework --target=main
+      gp sync-done start-function
+  - name: Call function
+    command: |
+      gp sync-await start-function
+      curl -X POST -H "Content-Type: application/json" -d '{"name": "Siddhant"}' $(gp url 8080)
+
+vscode:
+  extensions:
+    - ms-python.python
+    - ms-python.black-formatter
+
+ports:
+  - port: 8080
+    visibility: public
